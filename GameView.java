@@ -14,46 +14,46 @@ import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
-    private GameThread _thread;
+    private GameThread threadThing;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        //So we can listen for events...
+        //eventListenerstufflizm
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
         setFocusable(true);
 
-        //and instantiate the thread
-        _thread = new GameThread(holder, context, new Handler());
+        //starter en thread lizm, må gjøres av en eller annen grunn
+        threadThing = new GameThread(holder, context, new Handler());
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent msg) {
-        return _thread.getGameState().keyPressed(keyCode, msg);
+        return threadThing.getGameState().keyPressed(keyCode, msg);
     }
     public boolean onTouchEvent(MotionEvent event) {
-        return _thread.getGameState().motionDetected(event);
+        return threadThing.getGameState().motionDetected(event);
     }
 
-    //Implemented as part of the SurfaceHolder.Callback interface
+    //Viktig surfaceChangedFunksjon, må gjøres.
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
-        //Mandatory, just swallowing it for this example
 
     }
 
-    //Implemented as part of the SurfaceHolder.Callback interface
+    //Også em viktig funksjon
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        _thread.start();
+
+        threadThing.start();
     }
 
-    //Implemented as part of the SurfaceHolder.Callback interface
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        _thread.stop();
+
+        threadThing.stop();
     }
 }
 

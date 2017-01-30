@@ -5,11 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import sheep.input.TouchListener;
-import sheep.game.Sprite;
+
 import sheep.game.State;
-import sheep.graphics.Image;
-import sheep.game.Game;
 
 /**
  * Created by Even on 29.01.2017.
@@ -17,21 +14,22 @@ import sheep.game.Game;
 
 public class GameState extends State {
     //screen width and height
-    final int _screenWidth = 300;
-    final int _screenHeight = 420;
+    final int width = 300;
+    final int height = 420;
 
     //The ball
     final int ballSize = 10;
-    int _ballX = 100;
-    int _ballY = 100;
-    int _ballVelocityX = 3;
-    int _ballVelocityY = 3;
+    int ballXCoord = 100;
+    int ballYCoord = 100;
+    int ballSpeedX = 3;
+    int ballSpeedY = 3;
 
     //The bats
-    final int _batLength = 90;	final int _batHeight = 10;
-    int _topBatX = (_screenWidth/2) - (_batLength / 2);
+    final int padLength = 90;
+    final int padHeight = 10;
+    int _topBatX = (width /2) - (padLength / 2);
     final int _topBatY = 20;
-    int _bottomBatX = (_screenWidth/2) - (_batLength / 2);
+    int _bottomBatX = (width /2) - (padLength / 2);
     final int _bottomBatY = 400;
     final int _batSpeed = 3;
 
@@ -41,28 +39,28 @@ public class GameState extends State {
     //The update method
     public void update() {
 
-        _ballX += _ballVelocityX;
-        _ballY += _ballVelocityY;
+        ballXCoord += ballSpeedX;
+        ballYCoord += ballSpeedY;
 
 //DEATH!
-        if(_ballY > _screenHeight || _ballY < 0) {
-            _ballX = 100; 	_ballY = 100;
+        if(ballYCoord > height || ballYCoord < 0) {
+            ballXCoord = 100; 	ballYCoord = 100;
         }  	//Collisions with the sides
 
-        if(_ballX > _screenWidth || _ballX < 0) _ballVelocityX *= -1; 	//Collisions with the bats
+        if(ballXCoord > width || ballXCoord < 0) ballSpeedX *= -1; 	//Collisions with the bats
 
-        if(_ballX > _topBatX && _ballX < _topBatX+_batLength && _ballY < _topBatY) _ballVelocityY *= -1;  //Collisions with the bats
+        if(ballXCoord > _topBatX && ballXCoord < _topBatX+ padLength && ballYCoord < _topBatY) ballSpeedY *= -1;  //Collisions with the bats
 
-        if(_ballX > _bottomBatX && _ballX < _bottomBatX+_batLength
-                && _ballY > _bottomBatY)
-            _ballVelocityY *= -1;
+        if(ballXCoord > _bottomBatX && ballXCoord < _bottomBatX+ padLength
+                && ballYCoord > _bottomBatY)
+            ballSpeedY *= -1;
 
     }
 
     public boolean motionDetected(MotionEvent event) {
         float trykkX = event.getX();
 
-        _bottomBatX=(int)trykkX-_batLength/2;
+        _bottomBatX=(int)trykkX- padLength /2;
         if (trykkX > _bottomBatX) {
             _bottomBatX = _bottomBatX + _batSpeed;
             if (Math.random() * 100 > 50) {
@@ -210,14 +208,14 @@ public class GameState extends State {
         paint.setARGB(200, 0, 200, 0);
 
 //draw the ball
-        canvas.drawRect(new Rect(_ballX,_ballY,_ballX + ballSize,_ballY + ballSize),
+        canvas.drawRect(new Rect(ballXCoord, ballYCoord, ballXCoord + ballSize, ballYCoord + ballSize),
                 paint);
 
 //draw the bats
-        canvas.drawRect(new Rect(_topBatX, _topBatY, _topBatX + _batLength,
-                _topBatY + _batHeight), paint); //top bat
-        canvas.drawRect(new Rect(_bottomBatX, _bottomBatY, _bottomBatX + _batLength,
-                _bottomBatY + _batHeight), paint); //bottom bat
+        canvas.drawRect(new Rect(_topBatX, _topBatY, _topBatX + padLength,
+                _topBatY + padHeight), paint); //top bat
+        canvas.drawRect(new Rect(_bottomBatX, _bottomBatY, _bottomBatX + padLength,
+                _bottomBatY + padHeight), paint); //bottom bat
 
     }
 }

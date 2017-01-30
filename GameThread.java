@@ -12,29 +12,29 @@ import android.view.SurfaceHolder;
 
 public class GameThread extends Thread{
     /** Handle to the surface manager object we interact with */
-    private SurfaceHolder _surfaceHolder;
-    private Paint _paint;
-    private GameState _state;
+    private SurfaceHolder sHolder;
+    private Paint paint1;
+    private GameState state;
 
     public GameThread(SurfaceHolder surfaceHolder, Context context, Handler handler)
     {
-        _surfaceHolder = surfaceHolder;
-        _paint = new Paint();
-        _state = new GameState();
+        sHolder = surfaceHolder;
+        paint1 = new Paint();
+        state = new GameState();
     }
 
     @Override
     public void run() {
         while(true) {
-            Canvas canvas = _surfaceHolder.lockCanvas();
-            _state.update();
-            _state.draw(canvas,_paint);
-            _surfaceHolder.unlockCanvasAndPost(canvas);
+            Canvas canvas = sHolder.lockCanvas();
+            state.update();
+            state.draw(canvas, paint1);
+            sHolder.unlockCanvasAndPost(canvas);
         }
     }
 
     public GameState getGameState(){
-        return _state;
+        return state;
     }
 }
 
